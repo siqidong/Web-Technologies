@@ -1,0 +1,164 @@
+<!-- CS571 Homework#8 -->
+<!-- Author: Siqi Dong -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework 8 | Siqi Dong</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="myhw8.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js" type="text/javascript"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    
+    <script src="myhw8.js"></script>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+   
+</head>
+
+<body>
+
+<script>
+  window.fbAsyncInit = function() {
+    // init the FB JS SDK
+    FB.init({
+      appId      : '1699387983648904', 
+      channelUrl : 'http://cs-server.usc.edu:25401/hw8.html',
+      status     : true,
+      xfbml      : true
+    });
+  };
+  // Load the SDK asynchronously
+  (function(){
+     if (document.getElementById('facebook-jssdk')) {return;}
+     var firstScriptElement = document.getElementsByTagName('script')[0];
+     var facebookJS = document.createElement('script'); 
+     facebookJS.id = 'facebook-jssdk';
+     facebookJS.src = '//connect.facebook.net/en_US/all.js';
+     firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);
+   }());
+</script>
+
+
+<div class="container-fluid">
+    <div class="input">
+        <h4 style="text-align:center;">Stock Market Search</h4>
+
+        <div class="row">
+        <form class="form-inline" role="form" id="myForm">
+        <div class="col-sm-3"><label>Enter the stock name or symbol:<span style="color:red">*</span></label></div>
+        <div class="col-sm-6"><input id="inputtext" size="60" class="form-control" required placeholder="Apple Inc or APPL">
+        </div>
+        <div class="col-sm-3">
+        <button type="submit" class="btn btn-primary btn-md" style="margin:5px;">
+        <span class="glyphicon glyphicon-search"></span> Get Quote</button>
+
+        <button type="button" class="btn btn-default btn-md" onclick="clearForm()" style="margin:5px;">
+        <span class="glyphicon glyphicon-refresh"></span> Clear</button>
+        </div></form>
+        </div>
+        <br>
+        <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6"><p id="message" style="color:red;"></p></div>
+        <div class="col-sm-3">
+        <span style="margin:5px;">Powered by:
+        <a href="http://dev.markitondemand.com/MODApis/" target="_blank">
+       <img border="0" alt="markit logo" src="http://cs-server.usc.edu:45678/hw/hw8/images/mod-logo.png"
+    width="130" height="30"></a></span></div>
+        </div>
+
+    </div>
+
+    <hr style="max-width:1000px">
+
+    <div class="output">
+        <div id="myCarousel" class="carousel slide" data-interval="false">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+
+                <div class="item active">
+                    <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                    <div class="nav">
+                    <b>Favorite List</b>
+                    <span class="pull-right"><span class="hidden-xs">Automatic Refresh:</span>
+                    <input type="checkbox" id="refresh" data-toggle="toggle">
+
+                    <button type="button" id="autorefresh" class="btn btn-default" title="Refresh">
+                    <span class="glyphicon glyphicon-refresh"></span></button>
+
+                    <button type="button" id="myBtn1" class="btn btn-default" title="Display Stock Information"><span class="glyphicon glyphicon-chevron-right"></span></button>
+                    </span>
+                    </div>
+                    </div>
+
+                    <div class="panel-body">
+                    <div id="myBoard"></div>
+                    </div>
+
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="panel panel-default">
+                    <div class="panel-heading" style="text-align:center;">
+                    <div class="nav">
+                    <button type="button" id="myBtn2" class="btn btn-default pull-left" title="Display Stock Information"><span class="glyphicon glyphicon-chevron-left"></span></button>
+                    <span style="font-weight: bold;">Stock Details</span>
+                    </div>
+                    </div>
+
+                    <div class="panel-body">
+
+                    <ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="pill" href="#menu1">
+                        <span class="glyphicon glyphicon-dashboard"></span><span class="hidden-xs"> Current</span> Stock</a></li>
+                    <li ><a data-toggle="pill" href="#menu2">
+                        <span class="glyphicon glyphicon-stats"></span><span class="hidden-xs">  Historical</span> Charts</a></li>
+                    <li><a data-toggle="pill" href="#menu3">
+                        <span class="glyphicon glyphicon-link"></span> News<span class="hidden-xs"> Feeds</span></a></li>
+                    </ul>
+                    
+
+                    <hr>
+                    <div class="tab-content">
+                    <div id="menu1" class="tab-pane fade in active">
+                        <div id="menu1button">
+                            <input type="image" id="fbBtn" src="fb.png" style="width:45px;height:45px;"/>
+                            <button type="button" id="favoriteBtn" class="btn btn-default btn-lg" title="Favorite this stock"><span id="myStar" class="glyphicon glyphicon-star"></span></button>
+                        </div>
+                        <div id="menu1detail"></div>
+                        <div id="menu1chart"></div>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                    </div>
+                    <div id="menu3" class="tab-pane fade">
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<noscript>
+</body>
+</html>
+

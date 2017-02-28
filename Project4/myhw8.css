@@ -1,0 +1,68 @@
+/* CS571 Homework#8 */
+/* Author: Siqi Dong */ 
+
+body {
+    font-family: "Times New Roman", Serif;
+    background-color: white;
+    position: relative;
+    background: url('back.jpg');
+    background-size: 1440px 800px;
+    background-attachment: fixed;
+    background-repeat: repeat-y;;
+}
+.glyphicon-star {
+   color: white;
+  text-shadow:0 0 1px black;
+
+}
+.bis.glyphicon-star {
+    color:yellow;
+  text-shadow:0 0 1px black;
+}
+.input{
+	background-color: white;
+	border-radius: 10px;
+    padding: 18px 10px 20px 10px;
+    margin: 10px auto;
+    max-width: 1000px;
+    height: auto;
+}
+
+.output {
+	background-color: white;
+	border-radius: 10px;
+    padding: 18px 10px 20px 10px;
+    margin: 10px auto;
+    max-width: 1000px;
+    height: auto;
+}
+
+.link {
+color: #428bca;
+}
+.link:link {
+    text-decoration: none;
+}
+.link:visited {
+    text-decoration: none;
+}
+.link:hover {
+    text-decoration: underline;
+}
+.link:active {
+    text-decoration: underline;
+}
+#menu1detail {
+   float: left;
+}
+#menu1button {
+   float: right;
+}
+#menu1chart {
+   float: right;
+}
+#fbBtn, #favoriteBtn {
+    margin:5px;
+    vertical-align:bottom;
+}
+
