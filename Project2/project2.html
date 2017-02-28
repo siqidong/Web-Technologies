@@ -1,0 +1,180 @@
+<!-- CS571 Homework#4 -->
+<!-- Author: Siqi Dong -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Homework 4 | Siqi Dong</title>
+	<style>
+		body{
+			font-family: Serif;
+			font-size: 20px;
+			text-align: center;
+			margin-top: 150px;
+		}
+
+		#inputfile {
+			margin: 10px auto;
+			padding: 5px;
+		}
+
+		#submitbutton {
+			margin-top: 20px;
+		}
+	</style>
+
+	<script type="text/javascript">
+		var xmlDoc;
+		var ifValid = false;
+
+		function getHTML() {
+			var inputurl = document.getElementById("inputfile").value;
+			if(inputurl == ""){
+            	alert("Error: Please enter a non-empty url.");
+            	return;
+          	}
+          	else{
+          		ifValid = checkXML(inputurl);
+          	}
+          	
+          	if(ifValid) {
+          		displayXML();
+          	}
+		}
+
+		function checkXML(url) {
+			var xmlhttp;
+			var validity = true;
+			if (window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			}
+			else {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.open("GET", url, false);
+			xmlhttp.send();
+			xmlDoc = xmlhttp.responseXML;
+
+			if (xmlhttp.status == 200) {
+				if (xmlDoc.parseError && xmlDoc.parseError.errorCode != 0) {
+           			alert("Error in XML file");
+           			validity = false;
+            	}
+            	else {
+            		if(xmlDoc.documentElement) {
+            			if (xmlDoc.documentElement.nodeName == "parsererror") {
+                        	alert("Error in XML file");
+                        	validity = false;
+                    	}
+                	}
+                	else {
+                    	alert("Error in XML file");
+                    	validity = false;
+               		}
+            	}
+			}
+			if (xmlhttp.status == 404) {
+           		alert("Error: Input XML does not exist.");
+           		validity = false;
+            }
+            if (validity == true) {
+            	if (xmlDoc.getElementsByTagName("Row").length == 0) {
+            		alert("Error: No radio stations in this XML file.");
+            		validity = false;
+            	}
+            }
+            return validity;
+
+		}
+
+		function displayXML() {
+
+			document.clear();
+			var newWindow = window.open("","MsgWindow","left=100px,width=1016px,height=600px,scrollbars=1,resizable=1");
+			var outputHTML = "<title>Cable Network Listings</title>";
+			outputHTML += "<style>td {height:100px;} img {display:block; width:100%;}</style>";
+			outputHTML += "<table border=\"1\" cellpadding=\"5\" style=\"width:1000px; margin:0px\"><tr>";
+
+			var header = xmlDoc.getElementsByTagName("Header")[0].getElementsByTagName("Data");
+
+			for (var i = 0; i < header.length; i++) {
+				outputHTML += "<th>";
+				outputHTML += getData(header[i].childNodes);
+				outputHTML += "</th>";
+			}
+			outputHTML += "</tr>";
+
+			var content = xmlDoc.getElementsByTagName("Row");
+			for (var i = 0; i < content.length; i++) {
+
+				var callsign = content[i].getElementsByTagName("CallSign")[0].childNodes;
+				var freq = content[i].getElementsByTagName("Frequency")[0].childNodes;
+				var location = content[i].getElementsByTagName("Location")[0];
+				var format = content[i].getElementsByTagName("Format")[0].childNodes;
+				var homepage = content[i].getElementsByTagName("HomePage")[0].childNodes;
+				var logo = content[i].getElementsByTagName("Logo")[0].childNodes;
+
+				outputHTML += "<tr>";
+				outputHTML += "<td>" + getData(callsign) + "</td>";
+				outputHTML += "<td>" + getData(freq) + "</td>";
+				outputHTML += "<td>" + getLocation(location) + "</td>";
+				outputHTML += "<td>" + getData(format) + "</td>";
+				outputHTML += "<td>" + getHomepage(homepage) + "</td>";
+				outputHTML += "<td>" + getLogo(logo) + "</td>";
+				outputHTML += "</tr>";
+			}
+
+			outputHTML += "</table><noscript/>";
+
+    		newWindow.document.write(outputHTML);
+    		newWindow.document.close();
+		}
+
+		function getData(data) {
+			var dataHTML= "";
+			if (data.length > 0) {
+				dataHTML += data[0].nodeValue;
+			}
+			return dataHTML;
+		}
+
+		function getHomepage(data) {
+			var homepageHTML ="";
+			if (data.length > 0) {
+				homepageHTML += "<a href='" + data[0].nodeValue + "' target='_blank'>" + data[0].nodeValue + "</a>";
+			}
+			return homepageHTML;
+		}
+
+		function getLogo(data) {
+			var logoHTML ="";
+			if (data.length > 0) {
+				logoHTML += "<img src='" + data[0].nodeValue + "' alt='Image is not valid' />";
+			}
+			return logoHTML;
+		}
+
+		function getLocation(loc) {
+			var locHTML = "";
+			var ifCity = loc.getElementsByTagName("City").length;
+			var ifSchool = loc.getElementsByTagName("School").length;
+
+			if (ifCity == 1 && ifSchool == 0) {
+				locHTML += "<ul><li>" + getData(loc.getElementsByTagName("City")[0].childNodes) + "</li></ul>";
+			}
+			if (ifCity == 1 && ifSchool == 1) {
+				locHTML += "<ul><li>" + getData(loc.getElementsByTagName("City")[0].childNodes) + "</li>";
+				locHTML += "<li>" + getData(loc.getElementsByTagName("School")[0].childNodes) + "</li></ul>";
+			}
+			return locHTML;
+		}
+	</script>
+</head>
+
+<body>
+	<p style="font-weight:bold">Enter URL for Company List XML File</p>
+	<input id="inputfile"/><br>
+	<button id="submitbutton" onclick="getHTML()">Submit Query</button>
+<noscript>
+</body>
+</html>
