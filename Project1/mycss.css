@@ -1,0 +1,88 @@
+/* CS571 Homework#3 */
+/* Author: Siqi Dong */ 
+
+body {
+    font-family: "Times New Roman", Serif;
+    background-color: #FCFBEF;
+    background-image: url("background.png");
+    background-repeat: repeat-x;
+    margin: 0px auto;
+    position: relative;
+}
+
+div.total {
+    margin: 0px auto;
+    width: 940px;
+}
+
+div.head {
+    font-weight: bold;
+    background-image: url("main.jpg");
+    background-repeat: no-repeat;
+    margin: 0px auto;
+    position: relative;
+    width: 900px;
+    height: 354px;
+} 
+
+div.headtext {
+    line-height: 22px;
+    position: absolute;
+    top: 226px;
+    left: 580px;
+}
+
+div.menu {
+    font-weight: bold;
+    background-image: url("menu.png");
+    background-repeat: no-repeat;
+    position: relative;
+    margin: 0px auto;
+    width: 940px;
+    height: 69px;
+} 
+
+div.menutext {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    width: 940px;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+}
+
+ul li {
+    float: left;
+    width: 16.6666666667%;
+    text-align: center;
+    display: inline-block;
+}
+
+ul li a{
+    display: block;
+    font-size: 18px;
+    color: #3C3504;
+}
+
+ul li a:hover
+{
+    color: #AB970C;
+}
+
+p {
+   margin: 0;
+}
+
+div.content {
+    background-color: white;
+    position: relative;
+    padding: 0px 10px 6px 10px;
+    width: 880px;
+    margin: 0px auto;
+}
